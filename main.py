@@ -28,8 +28,12 @@ def http_get(url):
         res = requests.get(url, headers=headers,
                            timeout=timeout)
     except:
-        res = requests.get(url, headers=headers,
-                           timeout=timeout)
+        try:
+            res = requests.get(url, headers=headers,
+                               timeout=timeout)
+        except:
+            res = requests.get(url, headers=headers,
+                               timeout=timeout)
     res.encoding = 'utf-8'
     html_content = res.text
     return html_content
