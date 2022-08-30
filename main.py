@@ -96,7 +96,7 @@ def get_villagetr_list(url):
                       'code': code,
                       'type': type,
                       }
-                print(pd)
+                # print(pd)
                 vl.append(pd)
         except:
             pass
