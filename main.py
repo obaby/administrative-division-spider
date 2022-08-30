@@ -7,9 +7,13 @@ from bs4 import BeautifulSoup
 import json
 import time
 
-def print_hi(name):
+def print_hi():
     # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press ⌘F8 to toggle the breakpoint.
+    print('*' * 100)
+    print('国家统计局行政区划爬虫')
+    print('http://h4ck.org.cn')
+    print('obaby@mars')
+    print('*' * 100)
 
 
 def get_main_page():
@@ -101,7 +105,7 @@ def get_villagetr_list(url):
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    print_hi('PyCharm')
+    print_hi()
     print('[*] 获取省份信息：')
     pl = get_main_page()
     print('[*] 省份数量：', len(pl))
