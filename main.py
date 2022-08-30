@@ -8,11 +8,6 @@ import json
 import time
 import os
 
-timeout = 5
-
-headers = {
-'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.149 Safari/537.36'
-}
 
 def print_hi():
     # Use a breakpoint in the code line below to debug your script.
@@ -22,12 +17,26 @@ def print_hi():
     print('obaby@mars')
     print('*' * 100)
 
+def http_get(url):
+    timeout = 10
+
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.149 Safari/537.36'
+    }
+
+    try:
+        res = requests.get(url, headers=headers,
+                           timeout=timeout)
+    except:
+        res = requests.get(url, headers=headers,
+                           timeout=timeout)
+    res.encoding = 'utf-8'
+    html_content = res.text
+    return html_content
 
 def get_main_page():
     province_list = []
-    res = requests.get('http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2021/index.html',headers=headers, timeout=timeout)
-    res.encoding = 'utf-8'
-    html_content = res.text
+    html_content =http_get('http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2021/index.html')
     soup = BeautifulSoup(html_content, "html.parser")
     table = soup.find('table')  # ,_class='')
     province_list_href = soup.find_all('td')
@@ -51,9 +60,7 @@ def get_main_page():
 
 def get_city_pages(url):
     city_list = []
-    res = requests.get(url,headers=headers, timeout=timeout)
-    res.encoding = 'utf-8'
-    html_content = res.text
+    html_content =http_get(url)
     soup = BeautifulSoup(html_content, "html.parser")
     province_list_href = soup.find_all('tr')
     baseurl = '/'.join(url.split('/')[:-1]) + '/'
@@ -81,9 +88,7 @@ def get_city_pages(url):
 
 def get_villagetr_list(url):
     vl = []
-    res = requests.get(url,headers=headers, timeout=timeout)
-    res.encoding = 'utf-8'
-    html_content = res.text
+    html_content =http_get(url)
     soup = BeautifulSoup(html_content, "html.parser")
     province_list_href = soup.find_all('tr')
     for i in province_list_href:
