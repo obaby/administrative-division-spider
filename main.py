@@ -100,7 +100,7 @@ def get_villagetr_list(url):
                 vl.append(pd)
         except:
             pass
-    time.sleep(1)
+    # time.sleep(1)
     return vl
 
 
