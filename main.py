@@ -17,6 +17,28 @@ def print_hi():
     print('obaby@mars')
     print('*' * 100)
 
+from requests.adapters import HTTPAdapter
+
+def http_get_with_retry(url):
+    timeout = 10
+
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.149 Safari/537.36'
+    }
+    s = requests.Session()
+    s.mount('http://', HTTPAdapter(max_retries=3))
+    s.mount('https://', HTTPAdapter(max_retries=3))
+
+    print(time.strftime('%Y-%m-%d %H:%M:%S'))
+    try:
+        r = s.get(url, timeout=timeout, headers=headers)
+        r.encoding = 'utf-8'
+        html_content = r.text
+        return html_content
+    except requests.exceptions.RequestException as e:
+        print(e)
+        return None
+
 def http_get(url):
     timeout = 10
 
