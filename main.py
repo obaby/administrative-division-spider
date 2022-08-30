@@ -5,7 +5,7 @@
 import requests
 from bs4 import BeautifulSoup
 import json
-
+import time
 
 def print_hi(name):
     # Use a breakpoint in the code line below to debug your script.
@@ -61,7 +61,7 @@ def get_city_pages(url):
                 pd = {'name': name,
                       'code': code,
                       'url': baseurl + url}  # 'http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2021/'
-                # print(pd)
+                print(pd)
                 city_list.append(pd)
         except:
             pass
@@ -82,19 +82,20 @@ def get_villagetr_list(url):
             code = tds[0].text
             type = tds[1].text
             name = tds[2].text
-            url = i.find('a')['href']
-            if '\xa0' in name or '版权所有' in name or '统计用' in name or name == '':
+            # url = i.find('a')['href']
+            if '\xa0' in name or '版权所有' in name or '统计用' in name or name == '' or '城乡分类代码' in name or '名称' in name:
                 # print('ignore')
                 pass
             else:
                 pd = {'name': name,
                       'code': code,
                       'type': type,
-                      'url': 'http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2021/' + url}
-                # print(pd)
+                      }
+                print(pd)
                 vl.append(pd)
         except:
             pass
+    time.sleep(1)
     return vl
 
 
@@ -115,8 +116,9 @@ if __name__ == '__main__':
             for l in ccl:
                 print('[*] 开始解析：', l['name'])
                 town_list = get_city_pages(l['url'])
-                # for t in town_list:
-                #     villagetr = get_villagetr_list(t['url'])
+                for t in town_list:
+                    villagetr = get_villagetr_list(t['url'])
+                    t['villagetr'] = villagetr
                 l['town'] = town_list
 
             c['country'] = ccl
