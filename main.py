@@ -6,6 +6,7 @@ import requests
 from bs4 import BeautifulSoup
 import json
 import time
+import os
 
 def print_hi():
     # Use a breakpoint in the code line below to debug your script.
@@ -111,6 +112,9 @@ if __name__ == '__main__':
     print('[*] 省份数量：', len(pl))
     count = 1
     for p in pl:
+        if os.path.isfile(p['name'] +".json"):
+            print('[E] 文件已经存在，跳过。')
+            continue
         print('[*] 开始解析：', '第', count, '个', p['name'])
         count += 1
         cl = get_city_pages(p['url'])
@@ -128,6 +132,8 @@ if __name__ == '__main__':
             c['country'] = ccl
         p['city'] = cl
         # break
+        with open(p['name'] +".json", "w") as file_handle:
+            json.dump(p, file_handle)
     print('[D] 最终数据：')
     print(pl)
     with open("record.json", "w") as f:
