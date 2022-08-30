@@ -133,9 +133,9 @@ if __name__ == '__main__':
         p['city'] = cl
         # break
         with open(p['name'] +".json", "w") as file_handle:
-            json.dump(p, file_handle)
+            json.dump(p, file_handle, ensure_ascii = False)
     print('[D] 最终数据：')
     print(pl)
     with open("record.json", "w") as f:
-        json.dump(pl, f)
+        json.dump(pl, f, ensure_ascii = False)
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
