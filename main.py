@@ -118,30 +118,30 @@ if __name__ == '__main__':
     print('[*] 省份数量：', len(pl))
     count = 1
     for p in pl:
-        if os.path.isfile(p['name'] +".json"):
-            print('[E] 文件已经存在，跳过。')
-            continue
-        print('[*] 开始解析：', '第', count, '个', p['name'])
-        count += 1
-        cl = get_city_pages(p['url'])
-        for c in cl:
-            ccl = get_city_pages(c['url'])
-            print('[*] 开始解析：', c['name'])
-            for l in ccl:
-                print('[*] 开始解析：', l['name'])
-                town_list = get_city_pages(l['url'])
-                for t in town_list:
-                    villagetr = get_villagetr_list(t['url'])
-                    t['villagetr'] = villagetr
-                l['town'] = town_list
+        try:
+            if os.path.isfile(p['name'] +".json"):
+                print('[E] 文件已经存在，跳过。')
+                continue
+            print('[*] 开始解析：', '第', count, '个', p['name'])
+            count += 1
+            cl = get_city_pages(p['url'])
+            for c in cl:
+                ccl = get_city_pages(c['url'])
+                print('[*] 开始解析：', c['name'])
+                for l in ccl:
+                    print('[*] 开始解析：', l['name'])
+                    town_list = get_city_pages(l['url'])
+                    for t in town_list:
+                        villagetr = get_villagetr_list(t['url'])
+                        t['villagetr'] = villagetr
+                    l['town'] = town_list
 
-            c['country'] = ccl
-        p['city'] = cl
-        # break
-        with open(p['name'] +".json", "w") as file_handle:
-            json.dump(p, file_handle, ensure_ascii = False)
-    print('[D] 最终数据：')
-    print(pl)
-    with open("record.json", "w") as f:
-        json.dump(pl, f, ensure_ascii = False)
+                c['country'] = ccl
+            p['city'] = cl
+            # break
+            with open(p['name'] +".json", "w") as file_handle:
+                json.dump(p, file_handle, ensure_ascii = False)
+        except:
+            print('[E] 发生异常，继续下一省份')
+    print('[D] 全部完成.')
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
