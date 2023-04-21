@@ -7,7 +7,7 @@ def json_to_csv(file_name, out_file=None):
     print('[*] 开始处理：', file_name)
     try:
         with open(file_name, 'r', encoding='gbk') as f:
-            jd = json.load(f)
+            jd = json.load(f, encoding='gbk')
     except:
         with open(file_name, 'r') as f:
             jd = json.load(f)
@@ -41,8 +41,8 @@ def json_to_csv(file_name, out_file=None):
     if out_file:
         df.to_csv(out_file, index=False)
     else:
-        out_file = './csv/' + file_name.split('.')[0] + '.csv'
-        df.to_csv('./csv/' + file_name.split('.')[0] + '.csv', index=False)
+        out_file = './csv2022/' + file_name.split('.')[0] + '.csv'
+        df.to_csv('./csv2022/' + file_name.split('.')[0] + '.csv', index=False)
     print('[*] 保存文件', out_file)
 
 

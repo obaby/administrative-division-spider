@@ -7,12 +7,25 @@ from bs4 import BeautifulSoup
 import json
 import time
 import os
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from lxml import etree
 
+
+chrome_options = Options() # 实例化Option对象
+chrome_options.add_argument('--headless') # 把Chrome浏览器设置为静默模式
+chrome_options.add_argument('--disable-gpu') # 禁止加载图片
+driver = webdriver.Chrome(options = chrome_options) # 设置引擎为Chrome，在后台默默运行
+
+def http_get(url):
+    driver.get(url)
+    return driver.page_source
+    # return html
 
 def print_hi():
     # Use a breakpoint in the code line below to debug your script.
     print('*' * 100)
-    print('国家统计局行政区划爬虫')
+    print('国家统计局行政区划爬虫 2023版')
     print('http://h4ck.org.cn')
     print('obaby@mars')
     print('*' * 100)
@@ -23,7 +36,8 @@ def http_get_with_retry(url):
     timeout = 10
 
     headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.149 Safari/537.36'
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.149 Safari/537.36',
+        'Cookie':'wzws_sessionid=gjdlZDJkMIEyY2UxZmSgZEJTU4AxMjQuMTM1LjE0LjE4OA==; SF_cookie_1=72991020; wzws_cid=21889bb66e7449b9f8197b26360827ee401bffb029c8aaab922bbcd19115ea8618c4ed6fd930115cf9ae27b706fef4cf83286fa07857931b4bd7a7045aa1c2cbbd1958003cdedaf6ea042cc493964bca'
     }
     s = requests.Session()
     s.mount('http://', HTTPAdapter(max_retries=3))
@@ -39,11 +53,11 @@ def http_get_with_retry(url):
         print(e)
         return None
 
-def http_get(url):
+def http_get_req(url):
     timeout = 10
 
     headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.149 Safari/537.36'
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36'
     }
 
     try:
@@ -62,7 +76,7 @@ def http_get(url):
 
 def get_main_page():
     province_list = []
-    html_content =http_get('http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2021/index.html')
+    html_content =http_get('http://www.stats.gov.cn/sj/tjbz/tjyqhdmhcxhfdm/2022/')
     soup = BeautifulSoup(html_content, "html.parser")
     table = soup.find('table')  # ,_class='')
     province_list_href = soup.find_all('td')
@@ -76,7 +90,7 @@ def get_main_page():
                 pass
             else:
                 pd = {'name': name,
-                      'url': 'http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2021/' + url}
+                      'url': 'http://www.stats.gov.cn/sj/tjbz/tjyqhdmhcxhfdm/2022/' + url}
                 # print(pd)
                 province_list.append(pd)
         except:
