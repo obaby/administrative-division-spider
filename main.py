@@ -18,8 +18,12 @@ chrome_options.add_argument('--disable-gpu') # 禁止加载图片
 driver = webdriver.Chrome(options = chrome_options) # 设置引擎为Chrome，在后台默默运行
 
 def http_get(url):
-    driver.get(url)
-    return driver.page_source
+    try:
+        driver.get(url)
+    except Exception as e:
+        print(e)
+        driver.get(url)
+    return driver.page_source.encode('utf-8')
     # return html
 
 def print_hi():
@@ -184,9 +188,10 @@ if __name__ == '__main__':
                 c['country'] = ccl
             p['city'] = cl
             # break
-            with open(p['name'] +".json", "w") as file_handle:
+            with open(p['name'] +".json", "w",encoding='utf8') as file_handle:
                 json.dump(p, file_handle, ensure_ascii = False)
-        except:
+        except Exception as e:
+            print(e)
             print('[E] 发生异常，继续下一省份')
     print('[D] 全部完成.')
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/

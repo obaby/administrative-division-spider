@@ -6,11 +6,11 @@ import sys, getopt
 def json_to_csv(file_name, out_file=None):
     print('[*] 开始处理：', file_name)
     try:
+        with open(file_name, 'r', encoding='utf8') as f:
+            jd = json.load(f, encoding='utf8')
+    except:
         with open(file_name, 'r', encoding='gbk') as f:
             jd = json.load(f, encoding='gbk')
-    except:
-        with open(file_name, 'r') as f:
-            jd = json.load(f)
     lines = []
     citys = jd['city']
     for c in citys:
